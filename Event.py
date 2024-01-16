@@ -90,7 +90,8 @@ class Event:
 
     def __str__(self):
         return (f"Событие {self._name},\n {self._description},\n дата и время начала: {self._ets},\n "
-                f"дата и время завершения: {self._eta}\n")
+                f"дата и время завершения: {self._eta},\n организатор события: {self._author},\n"
+                f"участники: {self._users}" )
 
     def __repr__(self):
         return f"{self._name}"
