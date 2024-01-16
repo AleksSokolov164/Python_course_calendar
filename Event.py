@@ -18,18 +18,16 @@ import datetime
 
 
 class Event:
-    '''Создаем событие поэлементно: название, описание,  дата начала, дата завершения, периодичность,
-     список участников'''
-    _author: str = ""
+    _author_id = ""
     _name = ""
     _description = ""
     _ets = datetime.datetime
     _eta = datetime.datetime
-    _period = dict()
+    _period = int()
     _users = list()
 
-    def __init__(self, author, name, description, ets, eta, users, period):
-        self._author = author
+    def __init__(self, author_id, name, description, ets, eta, users, period):
+        self._author_id = author_id
         self._ets = ets
         self._eta = eta
         self._name = name
@@ -38,10 +36,10 @@ class Event:
         self._period = period
 
     def edit_author(self, author):
-        self._author = author
+        self._author_id = author
 
     def get_author(self):
-        return self._author
+        return self._author_id
 
     def edit_name(self, new_name):
         self._name = new_name
@@ -67,9 +65,16 @@ class Event:
     def get_timings(self):
         return self._ets, self._eta
 
-    def edit_period(self, a, b):
-        self._period = {a: b}
-
+    def edit_iteration(self, iteration):
+        b = iteration
+        if b != 1 or b != 2 or b != 3 or b != 4:
+            raise Exception("Введено неверное значение периода': \n"
+                            "'1 - ежедневное'\n"
+                            "'2 - еженедельное'\n"
+                            "'3 - ежемесячное'\n"
+                            "'4 - ежегодное'\n")
+        else:
+            self._period = iteration
     def get_period(self):
         return self._period
 
@@ -89,9 +94,14 @@ class Event:
         return self._users.remove(user)
 
     def __str__(self):
-        return (f"Событие {self._name},\n {self._description},\n дата и время начала: {self._ets},\n "
-                f"дата и время завершения: {self._eta},\n организатор события: {self._author},\n"
-                f"участники: {self._users}" )
+        return (f"_________________________________\n"
+                f"СОБЫТИЕ {self._name},\n "
+                f"ОПИСАНИЕ {self._description},\n "
+                f"ДАТА И ВРЕМЯ\n   "
+                f"НАЧАЛО {self._ets},\n   "
+                f"ЗАВЕРШЕНИЕ {self._eta},\n "
+                f"ОРГАНИЗАТОР: {self._author_id},\n "
+                f"ПЕРИОДИЧНОСТЬ: {self._users}")
 
     def __repr__(self):
         return f"{self._name}"

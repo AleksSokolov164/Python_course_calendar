@@ -7,23 +7,23 @@ import Calendar
 
 class User:
     _login = ""
-    _pasword = ""
+    _password = ""
     __id_counter__ = 0
     _plan = Calendar.Calendar()
-    _message = ""
-
-    def __init__(self, login, pasword, plan):
+    _welcome = Calendar.Calendar()
+    def __init__(self, login, password, plan):
         self._id = "@" + str(self.__class__.__id_counter__)
         self.__class__.__id_counter__ += 1
         self._login = login
-        self._pasword = pasword
+        self._password = password
         self._plan = plan
+
 
     def get_login(self):
         return self._login
 
-    def get_pasword(self):
-        return self._pasword
+    def get_password(self):
+        return self._password
 
     def get_id(self):
         return self._id
