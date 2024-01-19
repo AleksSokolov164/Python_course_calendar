@@ -1,25 +1,43 @@
 
-import datetime
+users = ['1', '2', '3']
 
-d = datetime.datetime(2017, 12, 26, 22, 21,15)
-print(d)
-t = datetime.datetime(d.year, (d.month + 1)%12, d.day , 22, 21,15)
-print(t)
-d = datetime.date(2012, 12, 14)
+while True:
+    login = input('Ваш логин:')
+    flag = 0
+    for user in users:
+        if login == user:
+            flag = 1
+    if flag == 0:
+        print(login)
+        break
+    else:
+        print('Данный логин уже существует. Введите новый логин.')
 
-print(d.year)  # 2012
-print(d.day)  # 14
-print(d.month)
-
-now = datetime.datetime.now()
-
-
-
-# Кол-во времени между датами.
-delta = now - t
-
-print(delta)  # 38
-print(delta.seconds)  # 1131
+#
+# import datetime
+#
+# d = datetime.datetime(2017, 12, 26, 22, 21,15)
+# print(d)
+# t = datetime.timedelta(days=365)
+# print(t)
+#
+# print(d + t)
+#
+# d = datetime.date(2012, 12, 14)
+#
+# print(d.year)  # 2012
+# print(d.day)  # 14
+# print(d.month)
+#
+# now = datetime.datetime.now()
+#
+#
+#
+# # Кол-во времени между датами.
+# delta = now - t
+#
+# print(delta)  # 38
+# print(delta.second)  # 1131
 
 #
 # b = datetime.datetime(2017, 3, 5, 12, 30, 10)

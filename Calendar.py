@@ -9,12 +9,10 @@ import Event
 
 
 class Calendar:
-    calendar_id = ''
     events = list()
     welcome = list()
 
     def __init__(self):
-        self.calendar_id = dict()
         self.events = list()
         self.welcome = list()
 
@@ -90,4 +88,3 @@ class Calendar:
                             break
 
         return events1
-
