@@ -104,4 +104,4 @@ class Event:
                 f"ПЕРИОДИЧНОСТЬ: {self._users}")
 
     def __repr__(self):
-        return f"{self._name}"
+        return f"{self._name}, {self._ets}, {self._eta}"
