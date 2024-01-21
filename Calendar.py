@@ -6,32 +6,43 @@
 """
 import datetime
 import Event
+import User
 
 
 class Calendar:
-    events = list()
-    welcome = list()
+    _user = User.User()
+    _events = list()
+    _welcome = list()
 
-    def __init__(self):
-        self.events = list()
-        self.welcome = list()
+    def __init__(self, user=User.User(), events=list(), welcome=list()):
+        self._user = user
+        self._events = events
+        self._welcome = welcome
 
-    def __repr__(self):
-        return (f'{self.events}')
 
-    def add_event(self, author, name, description, ets, eta, users, period):
-        ev = Event.Event(author, name, description, ets, eta, users, period)
-        self.events.append(ev)
+    def add_event(self, author_id, name, description, ets, eta, period, users):
+        event = Event.Event(author_id, name, description, ets, eta, period, users)
+        self._events.append(event)
 
     def append_event(self, event):
-        self.events.append(event)
+        self._events.append(event)
 
-    def del_event(self, ev):
-        self.events.remove(ev)
+    def del_event(self, event):
+        self._events.remove(event)
+
+    def add_welcome(self, author_id, name, description, ets, eta, period, users):
+        event = Event.Event(author_id, name, description, ets, eta, period, users)
+        self._welcome.append(event)
+
+    def append_welcome(self, event):
+        self._welcome.append(event)
+
+    def del_welcome(self, event):
+        self._welcome.remove(event)
 
     def search_events(self, ets1, eta2):
         events1 = list()
-        for ev in self.events:
+        for ev in self._events:
             if ev._ets >= ets1 and ev._eta <= eta2:
                 events1.append(ev)
                 if ev._period == 1:
@@ -86,5 +97,16 @@ class Calendar:
                             k += datetime.timedelta(days=365)
                         else:
                             break
-
         return events1
+
+
+def edit_iteration(self, iteration):
+    b = iteration
+    if b != 1 or b != 2 or b != 3 or b != 4:
+        raise Exception("Введено неверное значение периода': \n"
+                        "'1 - ежедневное'\n"
+                        "'2 - еженедельное'\n"
+                        "'3 - ежемесячное'\n"
+                        "'4 - ежегодное'\n")
+    else:
+        self._period = iteration

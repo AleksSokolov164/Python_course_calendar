@@ -1,17 +1,38 @@
 
-users = ['1', '2', '3']
 
-while True:
-    login = input('Ваш логин:')
-    flag = 0
-    for user in users:
-        if login == user:
-            flag = 1
-    if flag == 0:
-        print(login)
-        break
-    else:
-        print('Данный логин уже существует. Введите новый логин.')
+
+print(hash('@1,2'))
+
+
+st = '0 '
+i = '1'
+j = '2'
+st = st + f'{i} : {j}\n 0'
+print(st)
+
+k = [1,2]
+g = [3,4]
+print(k + g)
+
+#
+#
+# d = {"@1": (1, 2)}
+# if (1, 2) in d.values():
+#     print('i')
+#
+# users = ['1', '2', '3']
+#
+# while True:
+#     login = input('Ваш логин:')
+#     flag = 0
+#     for user in users:
+#         if login == user:
+#             flag = 1
+#     if flag == 0:
+#         print(login)
+#         break
+#     else:
+#         print('Данный логин уже существует. Введите новый логин.')
 
 #
 # import datetime
