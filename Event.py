@@ -18,13 +18,28 @@ import datetime
 
 
 class Event:
-    _author_id = ""  # организатор события
-    _name = ""  # название события
-    _description = ""  # описание сабытия
-    _ets = datetime.datetime  # дата и время начала события
-    _eta = datetime.datetime  # дата и время окончания собития
-    _period = int()  # периодичность события
-    _users = dict()  # список участников {@идентификатор: флаг участия} , 0 - если учстник еще не решил, 1- если участвует
+    '''_author_id = "" идентификатор, организатор события
+    _name = ""   название события
+    _description = "" описание сабытия
+    _ets = datetime.datetime   дата и время начала события
+    _eta = datetime.datetime   дата и время окончания собития
+    _period = int()   периодичность события:
+                     1 - событие ежедневное
+                     2 - событие еженедельное
+                     3 - событие ежемесячное
+                     4 - событие ежегодное
+    _users = dict() список участников {@идентификатор: флаг участия} ,
+                                                   0 -  еще не решил,
+                                                   1 - участвует,
+
+      '''
+    _author_id = ""
+    _name = ""
+    _description = ""
+    _ets = datetime.datetime
+    _eta = datetime.datetime
+    _period = int()
+    _users = dict()
 
     def __init__(self,
                  author_id="",
@@ -42,40 +57,49 @@ class Event:
         self._users = users
         self._period = period
 
-    def edit_name(self, new_name):
-        self._name = new_name
+    def edit_name(self, new_name, user_id):
+        if user_id == self._author_id:
+            self._name = new_name
+        else:
+            print('Вы не обладаете правами организатора данного события')
 
     def get_name(self):
         return self._name
 
-    def edit_description(self, new_description):
-        self._description = new_description
+    def edit_description(self, new_description, user_id):
+        if user_id == self._author_id:
+            self._description = new_description
+        else:
+            print('Вы не обладаете правами организатора данного события')
 
     def get_description(self):
         return self._description
 
+    def add_user(self, new_user_id, user_id):
+        if user_id == self._author_id:
+            if new_user_id not in self._users.keys():
+                self._users[new_user_id] = 0
+            elif self._users[new_user_id] == 0:
+                print('Данный пользователь уже приглашен к участию')
+            else:
+                print('Данный пользователь уже приглашен и дал согласие на участие')
 
-    def add_user(self, user_id):
-        if user_id not in self._users.keys():
-            self._users[user_id] = 0
-        elif self._users[user_id] == 1:
-            print('Данный пользователь уже приглашен и дал согласие на участие')
-        else:
-            print('Данный пользователь уже приглашен к участию')
-
-    def del_user(self, user_id):
-        if user_id in self._users.keys():
+    def del_user(self, new_user_id, user_id):
+        if user_id == self._author_id:
+            if new_user_id in self._users.keys():
+                del self._users[user_id]
+            else:
+                print('Пользователь, которого вы хотите удалить, отсутсвует в списке участников')
+        elif new_user_id == user_id and user_id in self._users.keys():
             del self._users[user_id]
-        else:
-            print('Пользователь, которого вы хотите удалить, отсутсвует в списке участников')
-
+        elif new_user_id == user_id and user_id not in self._users.keys():
+            print('Вы не обладаете правами организатора данного события')
 
     def print_users(self):
         st = ''
         for i, j in self._users.items():
             st = st + f'{i} : {j}\n'
             print(st)
-
 
     def __str__(self):
         st = ''

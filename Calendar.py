@@ -100,13 +100,3 @@ class Calendar:
         return events1
 
 
-def edit_iteration(self, iteration):
-    b = iteration
-    if b != 1 or b != 2 or b != 3 or b != 4:
-        raise Exception("Введено неверное значение периода': \n"
-                        "'1 - ежедневное'\n"
-                        "'2 - еженедельное'\n"
-                        "'3 - ежемесячное'\n"
-                        "'4 - ежегодное'\n")
-    else:
-        self._period = iteration
