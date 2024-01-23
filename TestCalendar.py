@@ -22,8 +22,8 @@ print(c)
 
 x3 = datetime.datetime(2024, 1, 1, 00, 00, 10)
 y3 = datetime.datetime(2024, 1, 7, 23, 00, 10)
-c.search_events(x3, y3)
-for i in c.search_events(x3, y3):
+c.calendary_admin(x3, y3)
+for i in c.calendary_admin(x3, y3):
     print(i)
 
 

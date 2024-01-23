@@ -83,6 +83,8 @@ class Event:
                 print('Данный пользователь уже приглашен к участию')
             else:
                 print('Данный пользователь уже приглашен и дал согласие на участие')
+        else:
+            print('Вы не обладаете правами организатора данного события')
 
     def del_user(self, new_user_id, user_id):
         if user_id == self._author_id:
@@ -92,13 +94,17 @@ class Event:
                 print('Пользователь, которого вы хотите удалить, отсутсвует в списке участников')
         elif new_user_id == user_id and user_id in self._users.keys():
             del self._users[user_id]
-        elif new_user_id == user_id and user_id not in self._users.keys():
-            print('Вы не обладаете правами организатора данного события')
+        elif user_id not in self._users.keys():
+            print('Вы не обладаете правами на удаление данного участника')
 
     def print_users(self):
         st = ''
         for i, j in self._users.items():
-            st = st + f'{i} : {j}\n'
+            if j == 0:
+                k = 'приглашен'
+            else:
+                k = 'принял приглашение'
+            st = st + f'Пользователь: {i} - {j}\n'
             print(st)
 
     def __str__(self):

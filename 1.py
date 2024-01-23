@@ -1,18 +1,19 @@
+n_users = map(int, input("напишите их через запятую \n").split(","))
+print(n_users)
+for i in n_users:
+    print(i)
 
-
-
-print(hash('@1,2'))
 
 
 st = '0 '
 i = '1'
 j = '2'
 st = st + f'{i} : {j}\n 0'
-print(st)
+
 
 k = [1,2]
 g = [3,4]
-print(k + g)
+
 
 #
 #
