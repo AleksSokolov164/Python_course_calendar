@@ -7,89 +7,196 @@
 
 в main можно использовать ТОЛЬКО interface
 """
-
-import Calendar
+from Calendar import Calendar
 import User
 import Event
+import datetime
+
+import csv
 
 
 class Interface:
+    calendar = None
+    state = "start"
+    func_request = list()
+
+    @staticmethod
+    def work():
+        Interface.func_request = [Interface.start]
+
+        while Interface.func_request:
+            Interface.func_request[0]()
+            del Interface.func_request[0]
+
+            print(Interface.func_request)
+
+        print("Воркер интерфейса закончил работу")
+
+    @staticmethod
+    def start():
+        Interface.state = "start"
+        print("Старт програмы путей")
+        Interface.calendar = Calendar()
+        Interface.func_request.append(Interface.load_state)
+        Interface.func_request.append(Interface.read)
+
+    @staticmethod
+    def save_state():
+        if Interface.calendar is None:
+            return
+        with open("saved_data.txt", "w", newline="") as f:
+            w = csv.DictWriter(f, ["from", "to", "start", "end"])
+            w.writeheader()
+
+            routs = Interface.calendar.get_routs()
+            for point in routs:
+                for r in routs[point]:
+                    data = dict()
+                    data["from"], data["to"] = r.get_points()
+                    data["from"] = data["from"].get_name()
+                    data["to"] = data["to"].get_name()
+                    data["start"], data["end"] = r.get_timings()
+                    w.writerow(data)
+
+    @staticmethod
+    def load_state():
+        if Interface.calendar is None:
+            Interface.calendar = Calendar()
+
+        hubs = dict()
+        with open("saved_data.txt", "r") as f:
+            w = csv.DictReader(f, ["from", "to", "start", "end"])
+
+            for i in w:
+                if i["from"] == "from":
+                    continue
+
+                if i["from"] not in hubs:
+                    hubs[i["from"]] = Hub.Hub(i["from"])
+                if i["to"] not in hubs:
+                    hubs[i["to"]] = Hub.Hub(i["to"])
+
+                h, m, s = map(int, i["start"].split(":"))
+                a_time = datetime.time(hour=h, minute=m, second=s)
+                h, m, s = map(int, i["end"].split(":"))
+                b_time = datetime.time(hour=h, minute=m, second=s)
+
+                r = Route.Route(hubs[i["from"]], hubs[i["to"]], a_time, b_time)
+
+                Interface.calendar.add_route(r)
+
+        print(Interface.calendar)
+
+    @staticmethod
+    def read():
+        Interface.state = "read"
+        ret = input("""
+        Производим построение графа:
+        0) создать новую вершину
+        1) создать новое ребро
+        2) удалить вершину
+        3) удалить ребро
+        4) завершить редактирование графа
+        """)
+        ret = int(ret)
+        if ret == 0:
+            Interface.func_request.append(Interface.create_point)
+        elif ret == 1:
+            Interface.func_request.append(Interface.create_edge)
+        elif ret == 4:
+            Interface.func_request.append(Interface.request)
+        else:
+            raise ValueError
+
+    @staticmethod
+    def create_point():
+        name = input("Введите имя точки: ")
+        h = Hub.Hub(name)
+        Interface.calendar.add_point(h)
+        Interface.func_request.append(Interface.read)
+        Interface.save_state()
+
+    @staticmethod
+    def create_edge():
+        print("Уже существующие точки:")
+        points = list(Interface.calendar.get_points())
+        for i, p in enumerate(points):
+            print(f"{i}) {p.get_name()}")
+
+        a = int(input("Введите номер стартовой точки: "))
+        b = int(input("Введите номер конечной точки: "))
+
+        h, m, s = map(int, input("Введите время отбытия в формате: hh-mm-ss").split("-"))
+        a_time = datetime.time(hour=h, minute=m, second=s)
+        h, m, s = map(int, input("Введите время прибытия в формате: hh-mm-ss").split("-"))
+        b_time = datetime.time(hour=h, minute=m, second=s)
+
+        r = Route.Route(points[a], points[b], a_time, b_time)
+        Interface.calendar.add_route(r)
+        Interface.func_request.append(Interface.read)
+        Interface.save_state()
+
+    @staticmethod
+    def delete_point():
+        pass
+
+    @staticmethod
+    def delete_edge():
+        pass
+
+    @staticmethod
+    def request():
+        Interface.state = "request"
+        ret = input("""
+        Граф готов к запросам:
+        0) создать новый зарос
+        1) вернуться к редактированию
+        2) завершить работу
+        """)
+        ret = int(ret)
+        if ret == 0:
+            Interface.func_request.append(Interface.create_request)
+        elif ret == 1:
+            Interface.func_request.append(Interface.read)
+        elif ret == 2:
+            Interface.func_request.append(Interface.finish)
+        else:
+            raise ValueError
+
+    @staticmethod
+    def create_request():
+
+        print(Interface.calendar)
+
+        print("Уже существующие точки:")
+        points = list(Interface.calendar.get_points())
+        for i, p in enumerate(points):
+            print(f"{i}) {p.get_name()}")
+
+        a = int(input("Введите номер стартовой точки: "))
+        b = int(input("Введите номер конечной точки: "))
+
+        h, m, s = map(int, input("Введите время отбытия в формате: hh-mm-ss").split("-"))
+        a_time = datetime.time(hour=h, minute=m, second=s)
+        h, m, s = map(int, input("Введите время прибытия в формате: hh-mm-ss").split("-"))
+        b_time = datetime.time(hour=h, minute=m, second=s)
 
 
-    users = list()
-    events = list()
-    calendars = list()
 
-    def __init__(self):
-        self._users = list()
-        self._calendars = list()
+        routes = Interface.calendar.find_fastest_route(points[a], points[b], a_time, b_time)
 
-    def new_user(self):
-        while True:
-            flag = 0
-            login = input('Ваш логин:')
-            for user in self._users:
-                if login == user._login:
-                    flag = 1
-            if flag == 1:
-                print('Данный логин уже существует. Введите новый логин.')
-            else:
-                break
-        password = input('Ваш пароль:')
-        new_user = User.User(login, password)
-        calendar = Calendar.Calendar(user=new_user)
-        self._users.append(new_user)
-        self._calendars.append(calendar)
+        if routes is not None:
+            print("Построен кратчайший маршрут:")
+            for i in routes:
+                print(routes)
+        else:
+            print("Путь не существует")
 
-    def check_user(self):  # проверка логина и пароля
-        login = input('Введите ваш логин:')
-        for user in self._users:
-            if login == user._login:
-                password = input('Ваш пароль:')
-                if password == user._password:
-                    return user
-                else:
-                    print(f'Вы ввели неверный пароль для {login} \n')
-                    return None
-        print(f'Пользователя с логином {login} не существует \n')
-        return None
+        Interface.func_request.append(Interface.request)
 
-    def check_welcome(self, user):
-        for event in user._calendars._welcome:
-            print(f'Вас приглашают на событие {event}\n')
-            dn = (input('1 - внести данное событие в ваш календарь, \n'
-                        '2 - не внoсить событие в ваш календарь \n'))
-            if dn == '1':
-                user._calendar.append_event(event)
-            elif dn == '2':
-
-    def __str__(self):
-        r = ''
-        for i in self.users:
-            r = r + i._id + ' ' + i._login + ' ' + i._password + ', \n'
-
-        return f'{r}'
-
-    def add_user(self, user):
-        self.users.append(user)
-
-    def get_users(self):
-        return self.users
+    @staticmethod
+    def finish():
+        pass
 
 
-m = Backend()
-m.new_user()
-
-u2 = User.User("login1", "password1")
-
-m.add_user(u2)
-print(m)
-
-m.new_user()
-print(m)
-
-n1 = m.check_user()
-n2 = m.check_user()
-n3 = m.check_user()
-
-print(n1, n2, n3)
+Interface.work()

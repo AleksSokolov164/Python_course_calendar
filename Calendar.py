@@ -1,177 +1,3 @@
-s.add_event(u)
-u = s.new_user()
-s = Calendar()
-
-
-            print(event)
-        for event in events1:
-                            break
-                        else:
-                            k += datetime.timedelta(days=365)
-                            events1.append(ev1)
-                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                        if x >= ets1 and y <= eta2:
-                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
-                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
-                    while True:
-                    k = datetime.timedelta(days=365)
-                    a, b = ev._ets, ev._eta
-                elif ev._period == 4:
-                            break
-                        else:
-                            k += 1
-                            events1.append(ev1)
-                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                        if x >= ets1 and y <= eta2:
-                        y = datetime.datetime(b.year + n, a.month + k, b.day, b.hour, b.minute, b.second)
-                        x = datetime.datetime(a.year + n, a.month + k, a.day, a.hour, a.minute, a.second)
-                            n += 1
-                            k = 1
-                        if k == 13:
-                    while True:
-                    n = 0
-                    k = 0
-                    a, b = ev._ets, ev._eta
-                elif ev._period == 3:
-                            break
-                        else:
-                            k += datetime.timedelta(days=7)
-                            events1.append(ev1)
-                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                        if x >= ets1 and y <= eta2:
-                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
-                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
-                    while True:
-                    k = datetime.timedelta(days=7)
-                    a, b = ev._ets, ev._eta
-                elif ev._period == 2:
-                            break
-                        else:
-                            k += datetime.timedelta(days=1)
-                            events1.append(ev1)
-                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                        if x >= ets1 and y <= eta2:
-                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
-                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
-                    while True:
-                    k = datetime.timedelta(days=1)
-                    a, b = ev._ets, ev._eta
-                if ev._period == 1:
-                events1.append(ev)
-            if ev._ets >= ets1 and ev._eta <= eta2:
-        for ev in self._events:
-        eta2 = datetime.datetime(y, m, d, h, mi, s)
-        h, mi, s = map(int, input("Введите второе время в формате hh:mm:ss").split(":"))
-        y, m, d = map(int, input("Введите вторую дату в формате yy-mm-dd").split("-"))
-        ets1 = datetime.datetime(y, m, d, h, mi, s)
-        h, mi, s = map(int, input("Введите первое время в формате hh:mm:ss").split(":"))
-        y, m, d = map(int, input("Введите первую дату в формате yy-mm-dd").split("-"))
-        print('Для вывода вашего календаря задайте период')
-        events1 = list()
-        user = self._admin
-    def calendary_admin(self):
-
-
-                self._events.remove(event)
-            if event._name == name_event:
-        for event in self._events:
-        name_event = (input('Для удаления события введите его название')).strip()
-''' Необходимо вставить переименование, тзменение описания, изменени списка удаление события'''
-                print(event)
-            if event._author_id == user._id:
-        for event in self._events:
-        user = self._admin
-    def edit_event(self):
-
-
-        self._events.append(event)
-        event = Event.Event(author_id, name, description, ets, eta, period, users)
-            users[self._users[j - 1]._id] = 0
-        for j in n:
-        users = dict()
-        n = map(int, input("напишите их через запятую \n").split(","))
-
-        print("Введите номерa пользователей, чтобы пригласить их на мероприятие \n")
-            print(f' {i + 1}   {self._users[i]}   ')
-        for i in range(len(self._users)):
-              " N          пользователь               \n")
-        print("_______________________________________\n"
-                           "4 - событие ежегодное \n"))
-                           "3 - событие ежемесячное\n "
-                           "2 - событие еженедельное\n"
-                           "1 - событие ежедневное \n"
-                           "0 - событие не периодичное \n"
-        period = int(input("Введите периодичность события \n"
-        eta = datetime.datetime(y, m, d, h, mi, s)
-        h, mi, s = map(int, input("Введите время окончания мероприятия в формате hh:mm:ss").split(":"))
-        y, m, d = map(int, input("Введите дату окончания мероприятия в формате yy-mm-dd").split("-"))
-        ets = datetime.datetime(y, m, d, h, mi, s)
-        h, mi, s = map(int, input("Введите время начала мероприятия в формате hh:mm:ss").split(":"))
-        y, m, d = map(int, input("Введите дату начала мероприятия в формате yy-mm-dd").split("-"))
-        description = (input("Введите описание события: \n")).strip()
-        name = (input("Введите название события: \n")).strip()
-        author_id = user._id
-        user = self._admin
-    def add_event(self):
-
-                    print(f'{event._author_id} удалил Вас из списка приглашенных на событие \n')
-                elif event._users[user._id] == 2:
-                        event.del_user(user._id, user._id)
-                    elif dn == '2':
-                        event._users[user._id] == 1
-                    if dn == '1':
-                                '2 - не внoсить событие в ваш календарь \n'))
-                    dn = (input('1 - внести данное событие в ваш календарь, \n'
-                    print(f'Вас приглашают на событие {event}\n')
-                if event._users[user._id] == 0:
-            if user._id in event._users.keys:
-        for event in self._events:
-        user = self._admin
-    def check_welcome(self):
-
-        return None
-        print(f'Пользователя с логином {login} не существует \n')
-                    return None
-                    print(f'Вы ввели неверный пароль для {login} \n')
-                else:
-                    self._admin = user
-                if password == user._password:
-                password = input('Ваш пароль:')
-            if login == user._login:
-        for user in self._users:
-        login = input('Введите ваш логин:')
-    def check_user(self):  # проверка логинаf'Вас приглашают на событие {event}\n' и пароля
-
-
-        self._users.append(self._admin)
-        self._admin = User.User(login, password)
-        password = input('Ваш пароль:')
-                break
-            else:
-                print('Данный логин уже существует. Введите новый логин.')
-            if flag == 1:
-                    flag = 1
-                if login == user._login:
-            for user in self._users:
-            login = input('Ваш логин:')
-            flag = 0
-        while True:
-    def new_user(self):
-
-        self._events = list()
-        self._users = list()
-        self._admin = User.User
-    def __init__(self):
-
-    _events = list()
-    _users = list()
-    _admin = User.User
-class Calendar:
-
-
-import User
-import Event
-import datetime
 """
 У каждого календаря ровно один пользователь.
 
@@ -181,3 +7,251 @@ import datetime
 
 Класс календаря - хранит события.
 """
+
+import User
+import Event
+import datetime
+
+
+
+
+class Calendar:
+    _events = list()
+    _users = list()
+    _admin = User.User
+
+    def __init__(self):
+        self._admin = User.User
+        self._users = list()
+        self._calendars = list()
+
+    def new_user(self):  # новый пользователь
+        while True:
+            flag = 0
+            login = input('Ваш логин:')
+            for user in self._users:
+                if login == user._login:
+                    flag = 1
+            if flag == 1:
+                print('Данный логин уже существует. Введите новый логин.')
+            else:
+                break
+        password = input('Ваш пароль:')
+        new_user = User.User(login, password)
+        self._users.append(new_user)
+
+    def check_user(self):  # проверка логина и пароля
+        print('Авторизация')
+        n = 1
+        while n <=3:
+            login = input('Введите ваш логин:')
+            for user in self._users:
+                if login == user._login:
+                    password = input('Ваш пароль:')
+                    if password == user._password:
+                        self._admin = user
+                        n += 4
+                    else:
+                        print(f'Вы ввели неверный пароль для {login} \n')
+                        n += 1
+                        break
+                else:
+                    print(f'Пользователя с логином {login} не существует \n')
+                    n += 1
+                    break
+
+    def check_welcome(self):
+        user = self._admin
+        for event in self._events:
+            if event._author_id != user._id:
+                if user._id in event._users.keys():
+                    if event._users[user._id] == 0:
+                        print('Вас приглашают принять участие в событии')
+                        print(event)
+                        dn = input('1 - внести данное событие в ваш календарь, \n'
+                                   '2 - не внoсить событие в ваш календарь \n')
+                        if dn == '1':
+                            event._users[user._id] = 1
+                        elif dn == '2':
+                            event.del_user(user._id, user._id)
+                    elif event._users[user._id] == 2:
+                        print('Вас исключили из списка участников событи')
+                        print(event)
+
+    def calendary_admin(self):
+        user = self._admin
+        events1 = list()
+        print('Для вывода вашего календаря задайте период')
+        y, m, d = map(int, input("Введите первую дату в формате yy-mm-dd").split("-"))
+        h, mi, s = map(int, input("Введите первое время в формате hh:mm:ss").split(":"))
+        ets1 = datetime.datetime(y, m, d, h, mi, s)
+        y, m, d = map(int, input("Введите вторую дату в формате yy-mm-dd").split("-"))
+        h, mi, s = map(int, input("Введите второе время в формате hh:mm:ss").split(":"))
+        eta2 = datetime.datetime(y, m, d, h, mi, s)
+        for ev in self._events:
+            if ev._ets >= ets1 and ev._eta <= eta2:
+                events1.append(ev)
+                if ev._period == 1:
+                    a, b = ev._ets, ev._eta
+                    k = datetime.timedelta(days=1)
+                    while True:
+                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
+                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
+                        if x >= ets1 and y <= eta2:
+                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                            events1.append(ev1)
+                            k += datetime.timedelta(days=1)
+                        else:
+                            break
+                elif ev._period == 2:
+                    a, b = ev._ets, ev._eta
+                    k = datetime.timedelta(days=7)
+                    while True:
+                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
+                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
+                        if x >= ets1 and y <= eta2:
+                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                            events1.append(ev1)
+                            k += datetime.timedelta(days=7)
+                        else:
+                            break
+                elif ev._period == 3:
+                    n = 0
+                    k = 0
+                    a, b = ev._ets, ev._eta
+                    while True:
+                        if k == 13:
+                            n += 1
+                            k = 1
+                            y = datetime.datetime(b.year + n, a.month + k, b.day, b.hour, b.minute, b.second)
+                            x = datetime.datetime(a.year + n, a.month + k, a.day, a.hour, a.minute, a.second)
+                            if x >= ets1 and y <= eta2:
+                                ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                                events1.append(ev1)
+                                k += 1
+                            else:
+                                break
+                elif ev._period == 4:
+                    a, b = ev._ets, ev._eta
+                    k = datetime.timedelta(days=365)
+                    while True:
+                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
+                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
+                        if x >= ets1 and y <= eta2:
+                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                            events1.append(ev1)
+                            k += datetime.timedelta(days=365)
+                        else:
+                            break
+        print(events1)
+
+    def edit_events(self):
+        events1 = list
+        for i in range(len(self._events)):
+            event = self._events[i]
+            if self._admin._id == event._author_id or self._admin._id in event._users.keys():
+                print(f' НОМЕР _ {i + 1}\n')
+                print(event)
+        print('Для редактирования события введите его номер')
+        n_event = int(input())
+        n_edit = int(input('Введите номер изменения: \n'
+                           '1 - редактировать название события \n'
+                           '2 - редактировать описание события \n'
+                           '3 - редактировать список участников события \ покинуть событие \n'
+                           '4 - удалить событие \n'
+                           ))
+        if n_edit == 1:
+            new_name = input('Введите новое название:')
+            self._events[n_event - 1].edit_name(new_name, self._admin._id)
+        elif n_edit == 2:
+            new_description = input('Введите новое описание:')
+            self._events[n_event - 1].edit_description(new_description, self._admin._id)
+        elif n_edit == 3:
+            z = int(input('Введите номер изменения: \n'
+                      '1 - добавить участника\n'
+                      '2 - удалить участника\n'))
+            if z == 2:
+                print('Номер                 Участник')
+                for i in self._events[n_event - 1]._users.keys:
+                    print(f'{i} \n')
+                n_user = int(input('Введите id участника:'))
+                del self._events[n_event - 1]._users[n_user]
+            elif z == 1:
+                print('Номер                 Участник')
+                for i in range(len(self._users)):
+                    print(f'{i + 1}      {self._users[i]} ')
+                n_user = int(input('Введите номер участника:'))
+                self._events[n_event - 1]._users[self._users[i-1]._id] = 0
+        elif n_edit == 4:
+            self._events.pop(n_event)
+
+    def add_event(self):
+        user = self._admin
+        author_id = user._id
+        name = (input("Введите название события: \n")).strip()
+        description = (input("Введите описание события: \n")).strip()
+        y, m, d = map(int, input("Введите дату начала мероприятия в формате yy-mm-dd").split("-"))
+        h, mi, s = map(int, input("Введите время начала мероприятия в формате hh:mm:ss").split(":"))
+        ets = datetime.datetime(y, m, d, h, mi, s)
+        y, m, d = map(int, input("Введите дату окончания мероприятия в формате yy-mm-dd").split("-"))
+        h, mi, s = map(int, input("Введите время окончания мероприятия в формате hh:mm:ss").split(":"))
+        eta = datetime.datetime(y, m, d, h, mi, s)
+        period = int(input("Введите периодичность события \n"
+                           "4 - событие ежегодное \n"
+                            "3 - событие ежемесячное\n "
+                            "2 - событие еженедельное\n"
+                            "1 - событие ежедневное \n"
+                            "0 - событие не периодичное \n"))
+        print("_______________________________________\n"
+              " N          пользователь               \n")
+        for i in range(len(self._users)):
+            print(f' {i + 1}   {self._users[i]}   ')
+        print("Введите номерa пользователей, чтобы пригласить их на мероприятие \n")
+        n = list(map(int, input("напишите их через запятую \n").split(",")))
+        users = dict()
+        for i in n:
+            users[self._users[i - 1]._id] = 0
+        event = Event.Event(author_id, name, description, ets, eta,  users, period)
+        self._events.append(event)
+
+    def __str__(self):
+        return (f'{self._users} ,\n'
+                f'{self._events} ,\n'
+                f'{self._admin}')
+
+
+
+
+c = Calendar()
+print(c)
+c.new_user()
+print(c)
+c.new_user()
+print(c)
+
+c.check_user()
+c.add_event()
+c.add_event()
+
+c.edit_events()
+c.edit_events()
+
+c.calendary_admin()
+c.check_user()
+c.check_welcome()
+c.add_event()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

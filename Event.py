@@ -31,6 +31,7 @@ class Event:
     _users = dict() список участников {@идентификатор: флаг участия} ,
                                                    0 -  еще не решил,
                                                    1 - участвует,
+                                                   2 - удалили из списка
 
       '''
     _author_id = ""
@@ -108,18 +109,15 @@ class Event:
             print(st)
 
     def __str__(self):
-        st = ''
-        for i, j in self._users.items():
-            st = st + f'{i} : {j}\n'
         return (f"_________________________________\n"
+                f"ОРГАНИЗАТОР: {self._author_id},\n "
                 f"СОБЫТИЕ {self._name},\n "
                 f"ОПИСАНИЕ {self._description},\n "
                 f"ДАТА И ВРЕМЯ\n   "
                 f"НАЧАЛО {self._ets},\n   "
-                f"ЗАВЕРШЕНИЕ {self._eta},\n "
-                f"ОРГАНИЗАТОР: {self._author_id},\n "
-                f"ПЕРИОДИЧНОСТЬ: {self._users}, \n"
-                f"ПРИГЛАШЕННЫЕ: \n {st}\n")
+                f"ЗАВЕРШЕНИЕ {self._eta},\n "                
+                f"ПЕРИОДИЧНОСТЬ: {self._period}, \n"
+                f"ПРИГЛАШЕННЫЕ: \n {self._users}\n")
 
     def __repr__(self):
         return f"{self._name}, {self._ets}, {self._eta}"
