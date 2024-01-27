@@ -44,21 +44,27 @@ class Calendar:
         print('Авторизация')
         n = 1
         while n <=3:
+            login1 = None
             login = input('Введите ваш логин:')
             for user in self._users:
-                if login == user._login:
-                    password = input('Ваш пароль:')
-                    if password == user._password:
-                        self._admin = user
-                        n += 4
-                    else:
-                        print(f'Вы ввели неверный пароль для {login} \n')
-                        n += 1
+                if user._login == login:
+                    login1 = login
+                    user1 = user
+            if login1 == login:
+                password = input('Ваш пароль:')
+                if password == user1._password:
+                        self._admin = user1
                         break
                 else:
-                    print(f'Пользователя с логином {login} не существует \n')
+                    print(f'Вы ввели неверный пароль для {login} \n')
                     n += 1
-                    break
+            else:
+                n += 1
+                print(f'Пользователя с логином {login} не существует \n')
+
+
+
+
 
     def check_welcome(self):
         user = self._admin
@@ -143,51 +149,67 @@ class Calendar:
                             k += datetime.timedelta(days=365)
                         else:
                             break
-        print(events1)
+        for event in events1:
+            print(f'день:{event._ets.day}, месяц:{event._ets.month}, год:{event._ets.year}')
+            print(event)
 
     def edit_events(self):
         events1 = list
+        number = 1
+        n_events = dict()
         for i in range(len(self._events)):
             event = self._events[i]
             if self._admin._id == event._author_id or self._admin._id in event._users.keys():
-                print(f' НОМЕР _ {i + 1}\n')
+                n_events[number] = i
+                print(f' НОМЕР _ {number}\n')
+                number += 1
                 print(event)
         print('Для редактирования события введите его номер')
-        n_event = int(input())
-        n_edit = int(input('Введите номер изменения: \n'
-                           '1 - редактировать название события \n'
-                           '2 - редактировать описание события \n'
-                           '3 - редактировать список участников события \ покинуть событие \n'
-                           '4 - удалить событие \n'
-                           ))
-        if n_edit == 1:
-            new_name = input('Введите новое название:')
-            self._events[n_event - 1].edit_name(new_name, self._admin._id)
-        elif n_edit == 2:
-            new_description = input('Введите новое описание:')
-            self._events[n_event - 1].edit_description(new_description, self._admin._id)
-        elif n_edit == 3:
-            z = int(input('Введите номер изменения: \n'
-                      '1 - добавить участника\n'
-                      '2 - удалить участника\n'))
-            if z == 2:
-                print('Номер                 Участник')
-                for i in self._events[n_event - 1]._users.keys:
-                    print(f'{i} \n')
-                n_user = int(input('Введите id участника:'))
-                del self._events[n_event - 1]._users[n_user]
-            elif z == 1:
-                print('Номер                 Участник')
-                for i in range(len(self._users)):
-                    print(f'{i + 1}      {self._users[i]} ')
-                n_user = int(input('Введите номер участника:'))
-                self._events[n_event - 1]._users[self._users[i-1]._id] = 0
-        elif n_edit == 4:
-            self._events.pop(n_event)
+        n_event = n_events[int(input())]
+        if self._events[n_event]._author_id == self._admin._id:
+            n_edit = int(input('Введите номер изменения: \n'
+                               '1 - редактировать название события \n'
+                               '2 - редактировать описание события \n'
+                               '3 - редактировать список участников события \n'
+                               '4 - удалить событие \n'
+                               ))
+            if n_edit == 1:
+                new_name = input('Введите новое название:')
+                self._events[n_event].edit_name(new_name, self._admin._id)
+            elif n_edit == 2:
+                new_description = input('Введите новое описание:')
+                self._events[n_event].edit_description(new_description, self._admin._id)
+            elif n_edit == 3:
+                z = int(input('Введите номер изменения: \n'
+                          '1 - добавить участника\n'
+                          '2 - удалить участника\ покинуть событие\n'))
+                if z == 2:
+                    print('Номер                 Участник')
+                    for i in self._events[n_event]._users:
+                        print(f'{i} \n')
+                    n_user = input('Введите id участника:')
+                    if self._admin._id == n_user:
+                        print('Вы не можете удалить себя из списка, т.к. вы - организатор. Вы можете удалить  событие')
+                    else:
+                        del self._events[n_event]._users[n_user]
+                elif z == 1:
+                    print('Номер                 Участник')
+                    for i in range(len(self._users)):
+                        print(f'{i + 1}      {self._users[i]} ')
+                    n_user = int(input('Введите номер участника:'))
+
+                    self._events[n_event]._users[self._users[i-1]._id] = 0
+            elif n_edit == 4:
+                self._events.pop(n_event)
+        elif self._events[n_event]._author_id == self._admin._id and self._admin._id in self._events[n_event]._users:
+            n_edit = int(input('Хотите покинуть данное событие?: \n'
+                               '1 - ДА \n'
+                               '2 - НЕТ\n'))
+            if n_edit == 1:
+                del self._events[n_event]._users[self._admin._id]
 
     def add_event(self):
-        user = self._admin
-        author_id = user._id
+        author_id = self._admin._id
         name = (input("Введите название события: \n")).strip()
         description = (input("Введите описание события: \n")).strip()
         y, m, d = map(int, input("Введите дату начала мероприятия в формате yy-mm-dd").split("-"))
@@ -223,24 +245,23 @@ class Calendar:
 
 
 c = Calendar()
-print(c)
+
 c.new_user()
-print(c)
 c.new_user()
-print(c)
+c.new_user()
+c.new_user()
 
 c.check_user()
-c.add_event()
-c.add_event()
 
+c.add_event()
 c.edit_events()
-c.edit_events()
-
 c.calendary_admin()
+
 c.check_user()
 c.check_welcome()
 c.add_event()
-
+c.edit_events()
+c.calendary_admin()
 
 
 

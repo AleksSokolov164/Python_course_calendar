@@ -28,7 +28,7 @@ class User:
         return f" Пользователь {self._id}\n"
 
     def __repr__(self):
-        return f"{self._id}]"
+        return f"User {self._id} ({self._login}, {self._password})"
 
     def __hash__(self):
         return int(self._id[1:])
