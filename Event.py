@@ -109,15 +109,36 @@ class Event:
             print(st)
 
     def __str__(self):
+        if self._period == 0:
+            period = 'непериодичное'
+        elif self._period == 1:
+            period = 'ежедневное'
+        elif self._period == 2:
+            period = 'еженедельное'
+        elif self._period == 3:
+            period = 'ежемесячное'
+        elif self._period == 4:
+            period = 'ежегодное'
+        guests = ''
+        users1 = self._users.items()
+        for i,j in users1:
+            if i != self._author_id:
+                if j == 0:
+                    guests = guests + f"{i} - приглашен "
+                elif j == 1:
+                    guests = guests + f"{i} - дал согласие на участие "
+                elif j == 2:
+                    guests = guests + f"{i} - удален из списка "
+
         return (f"_________________________________\n"
-                f"ОРГАНИЗАТОР: {self._author_id},\n "
-                f"СОБЫТИЕ {self._name},\n "
-                f"ОПИСАНИЕ {self._description},\n "
-                f"ДАТА И ВРЕМЯ\n   "
-                f"НАЧАЛО {self._ets},\n   "
-                f"ЗАВЕРШЕНИЕ {self._eta},\n "                
-                f"ПЕРИОДИЧНОСТЬ: {self._period}, \n"
-                f"ПРИГЛАШЕННЫЕ: \n {self._users}\n")
+                f"ОРГАНИЗАТОР: {self._author_id}\n"
+                f"СОБЫТИЕ {self._name}\n"
+                f"ОПИСАНИЕ {self._description}\n"
+                f"ДАТА И ВРЕМЯ\n"
+                f"НАЧАЛО {self._ets}\n"
+                f"ЗАВЕРШЕНИЕ {self._eta}\n"                
+                f"ПЕРИОДИЧНОСТЬ: {period} \n"
+                f"ПРИГЛАШЕННЫЕ: \n {guests}\n")
 
     def __repr__(self):
         return f"{self._name}, {self._ets}, {self._eta}"

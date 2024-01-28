@@ -1,5 +1,7 @@
-d = {1: 0, 2: 0}
-print(3 in d)
+d = [1, 2, 5]
+for i in range(10):
+    if i not in d:
+        print(i)
 
 
 

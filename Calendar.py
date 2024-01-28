@@ -13,8 +13,6 @@ import Event
 import datetime
 
 
-
-
 class Calendar:
     _events = list()
     _users = list()
@@ -43,7 +41,7 @@ class Calendar:
     def check_user(self):  # проверка логина и пароля
         print('Авторизация')
         n = 1
-        while n <=3:
+        while n <= 3:
             login1 = None
             login = input('Введите ваш логин:')
             for user in self._users:
@@ -53,18 +51,14 @@ class Calendar:
             if login1 == login:
                 password = input('Ваш пароль:')
                 if password == user1._password:
-                        self._admin = user1
-                        break
+                    self._admin = user1
+                    break
                 else:
                     print(f'Вы ввели неверный пароль для {login} \n')
                     n += 1
             else:
                 n += 1
                 print(f'Пользователя с логином {login} не существует \n')
-
-
-
-
 
     def check_welcome(self):  # проверка приглашений на мероприятия
         user = self._admin
@@ -181,27 +175,27 @@ class Calendar:
                 self._events[n_event].edit_description(new_description, self._admin._id)
             elif n_edit == 3:
                 z = int(input('Введите номер изменения: \n'
-                          '1 - добавить участника\n'
-                          '2 - удалить участника\ покинуть событие\n'))
+                              '1 - добавить участника\n'
+                              '2 - удалить участника\ покинуть событие\n'))
                 if z == 2:
-                    print('Номер                 Участник')
+                    print('Участники:')
                     for i in self._events[n_event]._users:
-                        print(f'{i} \n')
+                        print(f'{i} ')
                     n_user = input('Введите id участника:')
                     if self._admin._id == n_user:
                         print('Вы не можете удалить себя из списка, т.к. вы - организатор. Вы можете удалить  событие')
                     else:
                         del self._events[n_event]._users[n_user]
                 elif z == 1:
-                    print('Номер                 Участник')
-                    for i in range(len(self._users)):
-                        print(f'{i + 1}      {self._users[i]} ')
-                    n_user = int(input('Введите номер участника:'))
-
-                    self._events[n_event]._users[self._users[i-1]._id] = 0
+                    print('Возможные участники события:')
+                    for j in self._users:
+                        if j._id not in self._events[n_event]._users:
+                            print(f'{j._id}')
+                    n_user = input('Введите id участника:')
+                    self._events[n_event]._users[n_user] = 0
             elif n_edit == 4:
                 self._events.pop(n_event)
-        elif self._events[n_event]._author_id == self._admin._id and self._admin._id in self._events[n_event]._users:
+        else:     # elif self._events[n_event]._author_id == self._admin._id and self._admin._id in self._events[n_event]._users
             n_edit = int(input('Хотите покинуть данное событие?: \n'
                                '1 - ДА \n'
                                '2 - НЕТ\n'))
@@ -220,33 +214,23 @@ class Calendar:
         eta = datetime.datetime(y, m, d, h, mi, s)
         period = int(input("Введите периодичность события \n"
                            "4 - событие ежегодное \n"
-                            "3 - событие ежемесячное\n "
-                            "2 - событие еженедельное\n"
-                            "1 - событие ежедневное \n"
-                            "0 - событие не периодичное \n"))
+                           "3 - событие ежемесячное\n"
+                           "2 - событие еженедельное\n"
+                           "1 - событие ежедневное \n"
+                           "0 - событие не периодичное \n"))
         print("_______________________________________\n"
-              " N          пользователь               \n")
+              " N   ПОЛЬЗОВАТЕЛИ               \n")
         for i in range(len(self._users)):
             print(f' {i + 1}   {self._users[i]}   ')
-        print("Введите номерa пользователей, чтобы пригласить их на мероприятие \n")
-        n = list(map(int, input("напишите их через запятую \n").split(",")))
+        print("Введите номерa пользователей, чтобы пригласить их на мероприятие ")
+        n = list(map(int, input("(напишите их через запятую):\n").split(",")))
         users = dict()
         for i in n:
             users[self._users[i - 1]._id] = 0
-        event = Event.Event(author_id, name, description, ets, eta,  users, period)
+        event = Event.Event(author_id, name, description, ets, eta, users, period)
         self._events.append(event)
 
     def __str__(self):
         return (f'{self._users} ,\n'
                 f'{self._events} ,\n'
                 f'{self._admin}')
-
-
-
-
-
-
-
-
-
-

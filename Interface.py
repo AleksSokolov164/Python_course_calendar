@@ -28,7 +28,7 @@ class Interface:
             Interface.func_request[0]()
             del Interface.func_request[0]
 
-            print(Interface.func_request)
+#print(Interface.func_request)
 
         print("Воркер интерфейса закончил работу")
 
