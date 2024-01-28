@@ -66,7 +66,7 @@ class Calendar:
 
 
 
-    def check_welcome(self):
+    def check_welcome(self):  # проверка приглашений на мероприятия
         user = self._admin
         for event in self._events:
             if event._author_id != user._id:
@@ -84,7 +84,7 @@ class Calendar:
                         print('Вас исключили из списка участников событи')
                         print(event)
 
-    def calendary_admin(self):
+    def calendary_admin(self):  # вывод календаря по заданному периоду
         user = self._admin
         events1 = list()
         print('Для вывода вашего календаря задайте период')
@@ -150,10 +150,10 @@ class Calendar:
                         else:
                             break
         for event in events1:
-            print(f'день:{event._ets.day}, месяц:{event._ets.month}, год:{event._ets.year}')
+            print(f'число:{event._ets.day}, месяц:{event._ets.month}, год:{event._ets.year}')
             print(event)
 
-    def edit_events(self):
+    def edit_events(self):  # редактирование мероприятия
         events1 = list
         number = 1
         n_events = dict()
@@ -161,7 +161,7 @@ class Calendar:
             event = self._events[i]
             if self._admin._id == event._author_id or self._admin._id in event._users.keys():
                 n_events[number] = i
-                print(f' НОМЕР _ {number}\n')
+                print(f' НОМЕР - {number}')
                 number += 1
                 print(event)
         print('Для редактирования события введите его номер')
@@ -208,7 +208,7 @@ class Calendar:
             if n_edit == 1:
                 del self._events[n_event]._users[self._admin._id]
 
-    def add_event(self):
+    def add_event(self):  # новое мероприятие
         author_id = self._admin._id
         name = (input("Введите название события: \n")).strip()
         description = (input("Введите описание события: \n")).strip()
@@ -240,32 +240,6 @@ class Calendar:
         return (f'{self._users} ,\n'
                 f'{self._events} ,\n'
                 f'{self._admin}')
-
-
-
-
-c = Calendar()
-
-c.new_user()
-c.new_user()
-c.new_user()
-c.new_user()
-
-c.check_user()
-
-c.add_event()
-c.edit_events()
-c.calendary_admin()
-
-c.check_user()
-c.check_welcome()
-c.add_event()
-c.edit_events()
-c.calendary_admin()
-
-
-
-
 
 
 

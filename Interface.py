@@ -35,164 +35,130 @@ class Interface:
     @staticmethod
     def start():
         Interface.state = "start"
-        print("Старт програмы путей")
+        print("Старт програмы")
         Interface.calendar = Calendar()
-        Interface.func_request.append(Interface.load_state)
+        # Interface.func_request.append(Interface.load_state)
         Interface.func_request.append(Interface.read)
 
-    @staticmethod
-    def save_state():
-        if Interface.calendar is None:
-            return
-        with open("saved_data.txt", "w", newline="") as f:
-            w = csv.DictWriter(f, ["from", "to", "start", "end"])
-            w.writeheader()
-
-            routs = Interface.calendar.get_routs()
-            for point in routs:
-                for r in routs[point]:
-                    data = dict()
-                    data["from"], data["to"] = r.get_points()
-                    data["from"] = data["from"].get_name()
-                    data["to"] = data["to"].get_name()
-                    data["start"], data["end"] = r.get_timings()
-                    w.writerow(data)
-
-    @staticmethod
-    def load_state():
-        if Interface.calendar is None:
-            Interface.calendar = Calendar()
-
-        hubs = dict()
-        with open("saved_data.txt", "r") as f:
-            w = csv.DictReader(f, ["from", "to", "start", "end"])
-
-            for i in w:
-                if i["from"] == "from":
-                    continue
-
-                if i["from"] not in hubs:
-                    hubs[i["from"]] = Hub.Hub(i["from"])
-                if i["to"] not in hubs:
-                    hubs[i["to"]] = Hub.Hub(i["to"])
-
-                h, m, s = map(int, i["start"].split(":"))
-                a_time = datetime.time(hour=h, minute=m, second=s)
-                h, m, s = map(int, i["end"].split(":"))
-                b_time = datetime.time(hour=h, minute=m, second=s)
-
-                r = Route.Route(hubs[i["from"]], hubs[i["to"]], a_time, b_time)
-
-                Interface.calendar.add_route(r)
-
-        print(Interface.calendar)
+    # @staticmethod
+    # def save_state():
+    #     if Interface.calendar is None:
+    #         return
+    #     with open("saved_data.txt", "w", newline="") as f:
+    #         w = csv.DictWriter(f, ["from", "to", "start", "end"])
+    #         w.writeheader()
+    #
+    #         routs = Interface.calendar.get_routs()
+    #         for point in routs:
+    #             for r in routs[point]:
+    #                 data = dict()
+    #                 data["from"], data["to"] = r.get_points()
+    #                 data["from"] = data["from"].get_name()
+    #                 data["to"] = data["to"].get_name()
+    #                 data["start"], data["end"] = r.get_timings()
+    #                 w.writerow(data)
+    #
+    # @staticmethod
+    # def load_state():
+    #     if Interface.calendar is None:
+    #         Interface.calendar = Calendar()
+    #
+    #     hubs = dict()
+    #     with open("saved_data.txt", "r") as f:
+    #         w = csv.DictReader(f, ["from", "to", "start", "end"])
+    #
+    #         for i in w:
+    #             if i["from"] == "from":
+    #                 continue
+    #
+    #             if i["from"] not in hubs:
+    #                 hubs[i["from"]] = Hub.Hub(i["from"])
+    #             if i["to"] not in hubs:
+    #                 hubs[i["to"]] = Hub.Hub(i["to"])
+    #
+    #             h, m, s = map(int, i["start"].split(":"))
+    #             a_time = datetime.time(hour=h, minute=m, second=s)
+    #             h, m, s = map(int, i["end"].split(":"))
+    #             b_time = datetime.time(hour=h, minute=m, second=s)
+    #
+    #             r = Route.Route(hubs[i["from"]], hubs[i["to"]], a_time, b_time)
+    #
+    #             Interface.calendar.add_route(r)
+    #
+    #     print(Interface.calendar)
 
     @staticmethod
     def read():
         Interface.state = "read"
         ret = input("""
-        Производим построение графа:
-        0) создать новую вершину
-        1) создать новое ребро
-        2) удалить вершину
-        3) удалить ребро
-        4) завершить редактирование графа
+        Осуществляем вход в Календарь:
+        1) зарегистрироваться
+        2) войти
+        3) завершить работу
         """)
         ret = int(ret)
-        if ret == 0:
-            Interface.func_request.append(Interface.create_point)
-        elif ret == 1:
-            Interface.func_request.append(Interface.create_edge)
-        elif ret == 4:
-            Interface.func_request.append(Interface.request)
-        else:
-            raise ValueError
-
-    @staticmethod
-    def create_point():
-        name = input("Введите имя точки: ")
-        h = Hub.Hub(name)
-        Interface.calendar.add_point(h)
-        Interface.func_request.append(Interface.read)
-        Interface.save_state()
-
-    @staticmethod
-    def create_edge():
-        print("Уже существующие точки:")
-        points = list(Interface.calendar.get_points())
-        for i, p in enumerate(points):
-            print(f"{i}) {p.get_name()}")
-
-        a = int(input("Введите номер стартовой точки: "))
-        b = int(input("Введите номер конечной точки: "))
-
-        h, m, s = map(int, input("Введите время отбытия в формате: hh-mm-ss").split("-"))
-        a_time = datetime.time(hour=h, minute=m, second=s)
-        h, m, s = map(int, input("Введите время прибытия в формате: hh-mm-ss").split("-"))
-        b_time = datetime.time(hour=h, minute=m, second=s)
-
-        r = Route.Route(points[a], points[b], a_time, b_time)
-        Interface.calendar.add_route(r)
-        Interface.func_request.append(Interface.read)
-        Interface.save_state()
-
-    @staticmethod
-    def delete_point():
-        pass
-
-    @staticmethod
-    def delete_edge():
-        pass
-
-    @staticmethod
-    def request():
-        Interface.state = "request"
-        ret = input("""
-        Граф готов к запросам:
-        0) создать новый зарос
-        1) вернуться к редактированию
-        2) завершить работу
-        """)
-        ret = int(ret)
-        if ret == 0:
-            Interface.func_request.append(Interface.create_request)
-        elif ret == 1:
-            Interface.func_request.append(Interface.read)
+        if ret == 1:
+            Interface.func_request.append(Interface.new_user)
         elif ret == 2:
+            Interface.func_request.append(Interface.check_user)
+        elif ret == 3:
             Interface.func_request.append(Interface.finish)
+
         else:
             raise ValueError
 
     @staticmethod
-    def create_request():
+    def new_user():
+        Interface.calendar.new_user()
+        Interface.func_request.append(Interface.read)
+        #Interface.save_state()
 
-        print(Interface.calendar)
+    @staticmethod
+    def check_user():
+        Interface.calendar.check_user()
+        Interface.calendar.check_welcome()
 
-        print("Уже существующие точки:")
-        points = list(Interface.calendar.get_points())
-        for i, p in enumerate(points):
-            print(f"{i}) {p.get_name()}")
+        Interface.func_request.append(Interface.calendar_event)
+       # Interface.save_state()
 
-        a = int(input("Введите номер стартовой точки: "))
-        b = int(input("Введите номер конечной точки: "))
-
-        h, m, s = map(int, input("Введите время отбытия в формате: hh-mm-ss").split("-"))
-        a_time = datetime.time(hour=h, minute=m, second=s)
-        h, m, s = map(int, input("Введите время прибытия в формате: hh-mm-ss").split("-"))
-        b_time = datetime.time(hour=h, minute=m, second=s)
-
-
-
-        routes = Interface.calendar.find_fastest_route(points[a], points[b], a_time, b_time)
-
-        if routes is not None:
-            print("Построен кратчайший маршрут:")
-            for i in routes:
-                print(routes)
+    @staticmethod
+    def calendar_event():
+        ret = input("""
+                Календарь:
+                1) создать событие
+                2) редактировать событие
+                3) посмотреть календарь
+                4) выйти
+                """)
+        ret = int(ret)
+        if ret == 1:
+            Interface.func_request.append(Interface.add)
+        elif ret == 2:
+            Interface.func_request.append(Interface.edit)
+        elif ret == 3:
+            Interface.func_request.append(Interface.calendary)
+        elif ret == 4:
+            Interface.func_request.append(Interface.read)
         else:
-            print("Путь не существует")
+            raise ValueError
 
-        Interface.func_request.append(Interface.request)
+
+    @staticmethod
+    def add():
+        Interface.calendar.add_event()
+        Interface.func_request.append(Interface.calendar_event)
+
+    @staticmethod
+    def edit():
+        Interface.calendar.edit_events()
+        Interface.func_request.append(Interface.calendar_event)
+
+    @staticmethod
+    def calendary():
+        Interface.calendar.calendary_admin()
+        Interface.func_request.append(Interface.calendar_event)
+
+
 
     @staticmethod
     def finish():
