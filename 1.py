@@ -1,42 +1,34 @@
-d = [1, 2, 5]
-for i in range(10):
-    if i not in d:
-        print(i)
+import re
+just = '2012-11-10 09:08:01'
+price = re.findall("\d+", just)
+print(price)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-n_users = map(int, input("напишите их через запятую \n").split(","))
-print(n_users)
-for i in n_users:
-    print(i)
-
-
-
-st = '0 '
-i = '1'
-j = '2'
-st = st + f'{i} : {j}\n 0'
-
-
-k = [1,2]
-g = [3,4]
-
+# import ast
+# sd = ast.literal_eval("{'muffin' : 'lolz', 'foo' : 'kitty'}")
+# print(sd['muffin'])
+#
+#
+#
+#
+#
+# n_users = map(int, input("напишите их через запятую \n").split(","))
+# print(n_users)
+# for i in n_users:
+#     print(i)
+#
+#
+#
+# st = '0 '
+# i = '1'
+# j = '2'
+# st = st + f'{i} : {j}\n 0'
+#
+#
+# k = [1,2]
+# g = [3,4]
+#
 
 #
 #
@@ -85,7 +77,7 @@ g = [3,4]
 # print(delta.second)  # 1131
 
 #
-# b = datetime.datetime(2017, 3, 5, 12, 30, 10)
+# datetime.datetime(2017, 3, 5, 12, 30, 10)
 # print(b)  # datetime.datetime(2017, 3, 5, 12, 30, 10)
 #
 # d = datetime.datetime(2017, 3, 5, 12, 30, 10)

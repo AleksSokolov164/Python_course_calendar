@@ -14,6 +14,8 @@ class User:
         self._password = password
 
 
+    def edit_id(self, new_id):
+        self._id = new_id
 
     def get_login(self):
         return self._login

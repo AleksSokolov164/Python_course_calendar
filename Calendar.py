@@ -14,14 +14,33 @@ import datetime
 
 
 class Calendar:
-    _events = list()
-    _users = list()
-    _admin = User.User
+    # _events = list()
+    # _users = list()
+    # _admin = User.User
 
     def __init__(self):
         self._admin = User.User
         self._users = list()
-        self._calendars = list()
+        self._events = list()
+
+
+    def add_event(self, author_id, name, description, ets, eta, users, period):
+        event = Event.Event(author_id, name, description, ets, eta, users, period)
+        self._events.append(event)
+
+
+    def get_users(self):
+        return self._users
+
+    def add_user(self, login, password):
+        user = User.User(login, password)
+        self._users.append(user)
+
+    def get_calendars(self):
+        return self._events
+
+    def get_admin(self):
+        return self._admin
 
     def new_user(self):  # новый пользователь
         while True:
@@ -202,7 +221,7 @@ class Calendar:
             if n_edit == 1:
                 del self._events[n_event]._users[self._admin._id]
 
-    def add_event(self):  # новое мероприятие
+    def new_event(self):  # новое мероприятие
         author_id = self._admin._id
         name = (input("Введите название события: \n")).strip()
         description = (input("Введите описание события: \n")).strip()
