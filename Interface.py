@@ -38,6 +38,7 @@ class Interface:
         print("Старт програмы")
         Interface.calendar = Calendar()
         Interface.func_request.append(Interface.load_user)
+        Interface.func_request.append(Interface.load_calendars)
         Interface.func_request.append(Interface.read)
 
 
@@ -73,7 +74,7 @@ class Interface:
                 data_event["name"] = event.get_name()
                 data_event["description"] = event.get_description()
                 data_event["ets"] = event._ets  # ФОРМАТ ДАТЫ
-                data_event["eta"] = event._ets # ФОРМАТ ДАТЫ
+                data_event["eta"] = event._eta # ФОРМАТ ДАТЫ
                 data_event["users"] = str(event._users)  # ФОРМАТ список\строка
                 data_event["period"] = event._period
                 w.writerow(data_event)
@@ -99,7 +100,7 @@ class Interface:
         if Interface.calendar is None:
             Interface.calendar = Calendar()
 
-        with open("saved_calendars.txt.txt", "r") as f:
+        with open("saved_calendars.txt", "r") as f:
             w = csv.DictReader(f, ["author_id", "name", "description", "ets", "eta", "users", "period"])
 
             for i in w:
@@ -165,6 +166,7 @@ class Interface:
     def check_user():
         Interface.calendar.check_user()
         Interface.calendar.check_welcome()
+        Interface.func_request.append(Interface.save_calendars)
         Interface.func_request.append(Interface.calendar_event)
 
 
@@ -200,7 +202,7 @@ class Interface:
     @staticmethod
     def edit():
         Interface.calendar.edit_events()
-        Interface.func_request.append(Interface.save_users)
+        Interface.func_request.append(Interface.save_calendars)
         Interface.func_request.append(Interface.calendar_event)
 
 

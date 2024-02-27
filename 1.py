@@ -1,8 +1,24 @@
-import re
-just = '2012-11-10 09:08:01'
-price = re.findall("\d+", just)
-print(price)
 
+
+
+
+import datetime
+import calendar
+dt = datetime.datetime(year=2014, month=1, day=31)
+dt2 = datetime.datetime(year=2014, month=2, day=21)
+d = calendar.monthrange(dt.year,dt.month+1)[1]
+print (dt2 - dt)
+
+
+
+
+
+
+# import re
+# just = '2012-11-10 09:08:01'
+# price = re.findall("\d+", just)
+# print(price)
+#
 
 
 # import ast

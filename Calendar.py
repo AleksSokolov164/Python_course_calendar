@@ -110,58 +110,70 @@ class Calendar:
         for ev in self._events:
             if ev._ets >= ets1 and ev._eta <= eta2:
                 events1.append(ev)
-                if ev._period == 1:
+                if ev._period == 1 or ev._period == 2 or ev._period == 4:
+                    day = 1 if ev._period == 1 else (7 if ev._period == 2 else 365)
                     a, b = ev._ets, ev._eta
-                    k = datetime.timedelta(days=1)
+                    k = datetime.timedelta(days=day)
                     while True:
-                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
                         x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
+                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
                         if x >= ets1 and y <= eta2:
                             ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
                             events1.append(ev1)
-                            k += datetime.timedelta(days=1)
-                        else:
-                            break
-                elif ev._period == 2:
-                    a, b = ev._ets, ev._eta
-                    k = datetime.timedelta(days=7)
-                    while True:
-                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
-                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
-                        if x >= ets1 and y <= eta2:
-                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                            events1.append(ev1)
-                            k += datetime.timedelta(days=7)
+                            k += datetime.timedelta(days=day)
                         else:
                             break
                 elif ev._period == 3:
-                    n = 0
-                    k = 0
                     a, b = ev._ets, ev._eta
-                    while True:
-                        if k == 13:
-                            n += 1
-                            k = 1
-                            y = datetime.datetime(b.year + n, a.month + k, b.day, b.hour, b.minute, b.second)
-                            x = datetime.datetime(a.year + n, a.month + k, a.day, a.hour, a.minute, a.second)
-                            if x >= ets1 and y <= eta2:
-                                ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                                events1.append(ev1)
-                                k += 1
+                    if ev._ets.day in range(1, 28):
+                        n = 0
+                        k = 1
+                        while True:
+                            if (a.month + k) == 13 or k == 13:
+                                n += 1
+                                k = 0
+                                x = datetime.datetime(a.year + n, a.month + k, a.day, a.hour, a.minute, a.second)
+                                y = datetime.datetime(b.year + n, a.month + k, b.day, b.hour, b.minute, b.second)
+                                if x >= ets1 and y <= eta2:
+                                    ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                                    events1.append(ev1)
+                                    k += 1
+                                else:
+                                    break
                             else:
-                                break
-                elif ev._period == 4:
-                    a, b = ev._ets, ev._eta
-                    k = datetime.timedelta(days=365)
-                    while True:
-                        y = datetime.datetime(b.year, b.month, b.day, b.hour, b.minute, b.second) + k
-                        x = datetime.datetime(a.year, a.month, a.day, a.hour, a.minute, a.second) + k
-                        if x >= ets1 and y <= eta2:
-                            ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
-                            events1.append(ev1)
-                            k += datetime.timedelta(days=365)
-                        else:
-                            break
+                                x = datetime.datetime(a.year, a.month + k, a.day, a.hour, a.minute, a.second)
+                                y = datetime.datetime(b.year, a.month + k, b.day, b.hour, b.minute, b.second)
+                                if x >= ets1 and y <= eta2:
+                                    ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                                    events1.append(ev1)
+                                    k += 1
+                                else:
+                                    break
+                    else:
+                        d = b - a
+                        n = 0
+                        k = 1
+                        while True:
+                            if k == 13:
+                                n += 1
+                                k = 1
+                                x = datetime.datetime(a.year + n, a.month + k, 28, a.hour, a.minute, a.second)
+                                y = x + d
+                                if x >= ets1 and y <= eta2:
+                                    ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                                    events1.append(ev1)
+                                    k += 1
+                                else:
+                                    break
+                            else:
+                                x = datetime.datetime(a.year, a.month + k, 28, a.hour, a.minute, a.second)
+                                y = x + d
+                                if x >= ets1 and y <= eta2:
+                                    ev1 = Event.Event(ev._author_id, ev._name, ev._description, x, y, ev._users, ev._period)
+                                    events1.append(ev1)
+                                    k += 1
+                                else:
+                                    break
         for event in events1:
             print(f'число:{event._ets.day}, месяц:{event._ets.month}, год:{event._ets.year}')
             print(event)
@@ -177,49 +189,52 @@ class Calendar:
                 print(f' НОМЕР - {number}')
                 number += 1
                 print(event)
-        print('Для редактирования события введите его номер')
-        n_event = n_events[int(input())]
-        if self._events[n_event]._author_id == self._admin._id:
-            n_edit = int(input('Введите номер изменения: \n'
-                               '1 - редактировать название события \n'
-                               '2 - редактировать описание события \n'
-                               '3 - редактировать список участников события \n'
-                               '4 - удалить событие \n'
-                               ))
-            if n_edit == 1:
-                new_name = input('Введите новое название:')
-                self._events[n_event].edit_name(new_name, self._admin._id)
-            elif n_edit == 2:
-                new_description = input('Введите новое описание:')
-                self._events[n_event].edit_description(new_description, self._admin._id)
-            elif n_edit == 3:
-                z = int(input('Введите номер изменения: \n'
-                              '1 - добавить участника\n'
-                              '2 - удалить участника\ покинуть событие\n'))
-                if z == 2:
-                    print('Участники:')
-                    for i in self._events[n_event]._users:
-                        print(f'{i} ')
-                    n_user = input('Введите id участника:')
-                    if self._admin._id == n_user:
-                        print('Вы не можете удалить себя из списка, т.к. вы - организатор. Вы можете удалить  событие')
-                    else:
-                        del self._events[n_event]._users[n_user]
-                elif z == 1:
-                    print('Возможные участники события:')
-                    for j in self._users:
-                        if j._id not in self._events[n_event]._users:
-                            print(f'{j._id}')
-                    n_user = input('Введите id участника:')
-                    self._events[n_event]._users[n_user] = 0
-            elif n_edit == 4:
-                self._events.pop(n_event)
-        else:     # elif self._events[n_event]._author_id == self._admin._id and self._admin._id in self._events[n_event]._users
-            n_edit = int(input('Хотите покинуть данное событие?: \n'
-                               '1 - ДА \n'
-                               '2 - НЕТ\n'))
-            if n_edit == 1:
-                del self._events[n_event]._users[self._admin._id]
+        if self._admin._id == event._author_id or self._admin._id in event._users.keys():
+            print('Для редактирования события введите его номер')
+            n_event = n_events[int(input())]
+            if self._events[n_event]._author_id == self._admin._id:
+                n_edit = int(input('Введите номер изменения: \n'
+                                   '1 - редактировать название события \n'
+                                   '2 - редактировать описание события \n'
+                                   '3 - редактировать список участников события \n'
+                                   '4 - удалить событие \n'
+                                   ))
+                if n_edit == 1:
+                    new_name = input('Введите новое название:')
+                    self._events[n_event].edit_name(new_name, self._admin._id)
+                elif n_edit == 2:
+                    new_description = input('Введите новое описание:')
+                    self._events[n_event].edit_description(new_description, self._admin._id)
+                elif n_edit == 3:
+                    z = int(input('Введите номер изменения: \n'
+                                  '1 - добавить участника\n'
+                                  '2 - удалить участника\ покинуть событие\n'))
+                    if z == 2:
+                        print('Участники:')
+                        for i in self._events[n_event]._users:
+                            print(f'{i} ')
+                        n_user = input('Введите id участника:')
+                        if self._admin._id == n_user:
+                            print('Вы не можете удалить себя из списка, т.к. вы - организатор. Вы можете удалить  событие')
+                        else:
+                            del self._events[n_event]._users[n_user]
+                    elif z == 1:
+                        print('Возможные участники события:')
+                        for j in self._users:
+                            if j._id not in self._events[n_event]._users:
+                                print(f'{j._id}')
+                        n_user = input('Введите id участника:')
+                        self._events[n_event]._users[n_user] = 0
+                elif n_edit == 4:
+                    self._events.pop(n_event)
+            else:     # elif self._events[n_event]._author_id == self._admin._id and self._admin._id in self._events[n_event]._users
+                n_edit = int(input('Хотите покинуть данное событие?: \n'
+                                   '1 - ДА \n'
+                                   '2 - НЕТ\n'))
+                if n_edit == 1:
+                    del self._events[n_event]._users[self._admin._id]
+        else:
+            print("У вас нет событий для редактирования")
 
     def new_event(self):  # новое мероприятие
         author_id = self._admin._id
