@@ -20,7 +20,7 @@ def main(page):
     def password_click_authorization(e):
         if txt_password.value == users[txt_login.value].get_password():
             row2.visible = not row2.visible
-            page.add(row0)
+            page.add(row5)
         else:
             txt_password.error_text = "Пароль не подходит"
             page.update()
@@ -52,7 +52,9 @@ def main(page):
                 data_user["password"] = users[login1]._password
                 w.writerow(data_user)
         row4.visible = not row4.visible
+        row0.visible = not row0.visible
         page.add(row0)
+        page.update()
 
 
     def login_click_registration(e):
@@ -91,8 +93,16 @@ def main(page):
     txt_password_registration = ft.TextField(label="Введите ваш пароль")
     click_6 = ft.ElevatedButton("Ввод", on_click=password_click_registration)
 
+    click_7 = ft.ElevatedButton("Cоздать событие", on_click=authorization_click)
+    click_8 = ft.ElevatedButton("Редактировать событие", on_click=registration_click)
+    click_9 = ft.ElevatedButton("Посмотреть календарь", on_click=registration_click)
+    click_10 = ft.ElevatedButton("Выйти", on_click=registration_click)
+
+
+
     row3 = ft.Row([txt_login_registration, click_5])
     row4 = ft.Row([txt_password_registration, click_6])
+    row5 = ft.Column([click_7, click_8, click_9, click_10])
 
     page.add(row0)
 
