@@ -141,4 +141,4 @@ class Event:
                 f"ПРИГЛАШЕННЫЕ: \n {guests}\n")
 
     def __repr__(self):
-        return f"{self._name}, {self._ets}, {self._eta}"
+        return f"{self._name}, {self._users.items()}"

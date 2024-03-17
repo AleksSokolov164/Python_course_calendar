@@ -43,115 +43,137 @@ def main(page):
                 f"ПЕРИОДИЧНОСТЬ: {period} \n"
                 f"ПРИГЛАШЕННЫЕ: \n {guests}\n")
 
-    with open("saved_users.txt", "r") as f:
-        w = csv.DictReader(f, ["id", "login", "password"])
+    def load_users():
+        with open("saved_users.txt", "r") as f:
+            w = csv.DictReader(f, ["id", "login", "password"])
 
-        for i in w:
-            if i["id"] == "id":
-                continue
-            login = i["login"]
-            password = i["password"]
-            user = User.User(login=login, password=password)
-            users[login] = user
+            for i in w:
+                if i["id"] == "id":
+                    continue
+                login = i["login"]
+                password = i["password"]
+                user = User.User(login=login, password=password)
+                users[login] = user
 
+    load_users()
 
-    with open("saved_calendars.txt", "r") as f:
-        w = csv.DictReader(f, ["author_id", "name", "description", "ets", "eta", "users", "period"])
+    def saved_users():
+        with open("saved_users.txt", "w", newline="") as f:
+            w = csv.DictWriter(f, ["id", "login", "password"])
+            w.writeheader()
 
-        for i in w:
-            if i["author_id"] == "author_id":
-                continue
-            author_id = i["author_id"]
-            name = i["name"]
-            description = i["description"]
-            data_1 = i["ets"]
-            data_list1 = re.findall("\d+", data_1)
-            yy1 = int(data_list1[0])
-            mm1 = int(data_list1[1])
-            dd1 = int(data_list1[2])
-            hh1 = int(data_list1[3])
-            mm1 = int(data_list1[4])
-            ss1 = int(data_list1[5])
-            ets = datetime.datetime(yy1, mm1, dd1, hh1, mm1, ss1)
-            data_2 = i["eta"]
-            data_list2 = re.findall("\d+", data_2)
-            yy2 = int(data_list2[0])
-            mm2 = int(data_list2[1])
-            dd2 = int(data_list2[2])
-            hh2 = int(data_list2[3])
-            mm2 = int(data_list2[4])
-            ss2 = int(data_list2[5])
-            eta = datetime.datetime(yy2, mm2, dd2, hh2, mm2, ss2)
-            users1 = ast.literal_eval(i["users"])
-            period = int(i["period"])
-            event = Event.Event(author_id, name, description, ets, eta, users1, period)
-            events.append(event)
+            for login1 in users:
+                data_user = dict()
+                data_user["id"] = users[login1]._id
+                data_user["login"] = users[login1]._login
+                data_user["password"] = users[login1]._password
+                w.writerow(data_user)
+    def load_calendars():
+        with open("saved_calendars.txt", "r") as f:
+            w = csv.DictReader(f, ["author_id", "name", "description", "ets", "eta", "users", "period"])
 
-    event_control = None
-    def registration_user_event_y(e):
-        event_control._users[user._id] = 1
-        next1(e)
+            for i in w:
+                if i["author_id"] == "author_id":
+                    continue
+                author_id = i["author_id"]
+                name = i["name"]
+                description = i["description"]
+                data_1 = i["ets"]
+                data_list1 = re.findall("\d+", data_1)
+                yy1 = int(data_list1[0])
+                mm1 = int(data_list1[1])
+                dd1 = int(data_list1[2])
+                hh1 = int(data_list1[3])
+                mm1 = int(data_list1[4])
+                ss1 = int(data_list1[5])
+                ets = datetime.datetime(yy1, mm1, dd1, hh1, mm1, ss1)
+                data_2 = i["eta"]
+                data_list2 = re.findall("\d+", data_2)
+                yy2 = int(data_list2[0])
+                mm2 = int(data_list2[1])
+                dd2 = int(data_list2[2])
+                hh2 = int(data_list2[3])
+                mm2 = int(data_list2[4])
+                ss2 = int(data_list2[5])
+                eta = datetime.datetime(yy2, mm2, dd2, hh2, mm2, ss2)
+                users1 = eval(i["users"])
+                period = int(i["period"])
+                event = Event.Event(author_id, name, description, ets, eta, users1, period)
+                events.append(event)
 
-    def registration_user_event_n(e):
-        event_control._users[user._id] = 2
-        next1(e)
-    def next1(e):
+    load_calendars()
+    print(events)
 
-        user = users[txt_login]
-        for i in range(len(events)):
-            if events[i]._author_id != user._id:
-                if user._id in event[i]._users.keys():
-                    if event[i]._users[user._id] == 0:
-                        event_control = i
-                        text_event = ft.Text(f"Вас приглашают принять участие в событии:"
-                                             f"{print_event(event)}")
-                        click_11 = ft.ElevatedButton("Внести данное событие в ваш календарь",
-                                                     on_click=registration_user_event_y)
-                        click_12 = ft.ElevatedButton("Не внoсить событие в ваш календарь",
-                                                     on_click=registration_user_event_n)
-                        row6 = ft.Column([text_event, click_11, click_12])
-                        page.add(row6)
-                    elif event._users[user._id] == 2:
-                        text_event = ft.Text(f"'Вас исключили из списка участников событи:"
-                                             f"{print_event(event)}")
-                        click_13 = ft.ElevatedButton("Далее",
-                                                     on_click=next1)
-                        row7 = ft.Row([text_event, click_13])
-                        page.add(row7)
+    def saved_calendars():
+        with open("saved_calendars.txt", "w", newline="") as v:
+            w = csv.DictWriter(v, ["author_id", "name", "description", "ets", "eta", "users", "period"])
+            w.writeheader()
 
-        page.add(row5)
-
-
+            for event in events:
+                data_event = dict()
+                data_event["author_id"] = event._author_id
+                data_event["name"] = event.get_name()
+                data_event["description"] = event.get_description()
+                data_event["ets"] = event._ets  # ФОРМАТ ДАТЫ
+                data_event["eta"] = event._eta # ФОРМАТ ДАТЫ
+                data_event["users"] = str(event._users)  # ФОРМАТ список\строка
+                data_event["period"] = event._period
+                w.writerow(data_event)
+    n_event = ft.Text("")
     def password_click_authorization(e):
         if txt_password.value == users[txt_login.value].get_password():
             row2.visible = not row2.visible
             user = users[txt_login.value]
-            for event in events:
-                if event._author_id != user._id:
-                    if user._id in event._users.keys():
-                        if event._users[user._id] == 0:
-                            event_control = event
-                            text_event = ft.Text(f"Вас приглашают принять участие в событии:"
-                                                 f"{print_event(event)}")
+            for i in range(len(events)):
+                event_control = 0
+                if events[i]._author_id != user._id:
+                    if user._id in events[i]._users.keys():
+                        if events[i]._users[user._id] == 0:
+                            n_event.value = str(i)
+                            event_control = 1
+                            text_welcome1 = ft.Text(f"Вас приглашают принять участие в событии:")
+                            text_event1 = ft.Text(print_event(events[i]))
                             click_11 = ft.ElevatedButton("Внести данное событие в ваш календарь",
-                                                         on_click=registration_user_event_y)
-                            click_12 = ft.ElevatedButton("Не внoсить событие в ваш календарь",
-                                                         on_click=registration_user_event_n)
-                            row6 = ft.Column([text_event, click_11, click_12])
-                            page.add(row6)
-                        elif event._users[user._id] == 2:
-                            text_event = ft.Text(f"'Вас исключили из списка участников событи:"
-                                                 f"{print_event(event)}")
-                            click_13 = ft.ElevatedButton("Далее",
                                                          on_click=next1)
-                            row7 = ft.Row([text_event, click_13])
-                            page.add(row7)
-            page.add(row5)
+                            click_12 = ft.ElevatedButton("Не внoсить событие в ваш календарь",
+                                                         on_click=next1)
+                            row66 = ft.Row([click_11, click_12])
+                            row6 = ft.Column([text_welcome1, text_event1, row66])
+                            break
+                        elif events[i]._users[user._id] == 2:
+                            event_control = 2
+                            text_welcome2 = ft.Text(f"Вас исключили из списка участников событи:")
+                            text_event2 = ft.Text(print_event(events[i]))
+                            del events[i]._users[user._id]
+                            saved_calendars()
+                            print(events)
+                            click_13 = ft.ElevatedButton("Далее", on_click=password_click_authorization)
+                            row7 = ft.Column([text_welcome2, text_event2, click_13])
+                            break
+            if event_control == 1:
+                page.add(row6)
+            elif event_control == 2:
+                page.add(row7)
+            else:
+                page.add(row5)
         else:
             txt_password.error_text = "Пароль не подходит"
             page.update()
+    def next1(e):
+        user = users[txt_login.value]
+        events[int(n_event.value)]._users[user._id] = 1
+        saved_calendars()
+        page.controls.pop(0)
+        page.update()
+        password_click_authorization(e)
 
-
+    def next2(e):
+        user = users[txt_login.value]
+        del events[int(n_event.value)]._users[user._id]
+        saved_calendars()
+        page.controls.pop(0)
+        page.update()
+        password_click_authorization(e)
 
     def login_click_authorization(e):
         if txt_login.value in users.keys():
@@ -169,16 +191,7 @@ def main(page):
         password_registration.value = txt_password_registration.value
         user_registration = User.User(login=login_registration.value, password=password_registration.value)
         users[login_registration.value] = user_registration
-        with open("saved_users.txt", "w", newline="") as f:
-            w = csv.DictWriter(f, ["id", "login", "password"])
-            w.writeheader()
-
-            for login1 in users:
-                data_user = dict()
-                data_user["id"] = users[login1]._id
-                data_user["login"] = users[login1]._login
-                data_user["password"] = users[login1]._password
-                w.writerow(data_user)
+        saved_users()
         row4.visible = not row4.visible
         row0.visible = not row0.visible
         page.add(row0)
@@ -198,26 +211,6 @@ def main(page):
     def registration_click(e):
         row0.visible = not row0.visible
         page.add(row3)
-
-
-    def check_welcome_click(e):  # проверка приглашений на мероприятия
-        user = users[txt_login]
-        for event in events:
-            if event._author_id != user._id:
-                if user._id in event._users.keys():
-                    if event._users[user._id] == 0:
-                        print('Вас приглашают принять участие в событии')
-                        print(event)
-                        dn = input('1 - внести данное событие в ваш календарь, \n'
-                                   '2 - не внoсить событие в ваш календарь \n')
-                        if dn == '1':
-                            event._users[user._id] = 1
-                        elif dn == '2':
-                            event.del_user(user._id, user._id)
-                    elif event._users[user._id] == 2:
-                        print('Вас исключили из списка участников событи')
-                        print(event)
-
 
 
     login_registration = ft.Text("")
@@ -252,8 +245,8 @@ def main(page):
 
     row5 = ft.Column([click_7, click_8, click_9, click_10])
 
-
     page.add(row0)
 
 
 ft.app(target=main)
+
