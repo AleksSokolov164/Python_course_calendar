@@ -90,7 +90,7 @@ class Event:
     def del_user(self, new_user_id, user_id):
         if user_id == self._author_id:
             if new_user_id in self._users.keys():
-                self._users[user_id] = 2
+                self._users[new_user_id] = 2
             else:
                 print('Пользователь, которого вы хотите удалить, отсутсвует в списке участников')
         elif new_user_id == user_id and user_id in self._users.keys():
